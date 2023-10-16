@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Upload and Download</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        /* Estilo para el botón de carga de archivos */
+        .custom-file-input {
+            display: inline-block;
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .custom-file-input input[type="file"] {
+            display: none;
+        }
+        input[type="submit"] {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        h2 {
+            margin-top: 20px;
+            color: #333;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        a {
+            text-decoration: none;
+            color: #3498db;
+        }
+
+        /* Estilo para mostrar la información del archivo seleccionado */
+        #file-details {
+            display: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>File Upload and Download</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <label for="file-upload" class="custom-file-input">
+            <span>Choose a File</span>
+            <input type="file" id="file-upload" name="file" onchange="showFileDetails()">
+        </label>
+        <div id="file-details">
+            <p id="file-name">File Name: <span></span></p>
+            <p id="file-size">File Size: <span></span> bytes</p>
+        </div>
+        <input type="submit" value="Upload">
+    </form>
+    <h2>File List</h2>
+    <table>
+        <tr>
+            <th>File Name</th>
+            <th>Download</th>
+        </tr>
+        <!-- Mostrar aquí los registros de la base de datos -->
+    </table>
+
+    <script>
+        // Función para mostrar los detalles del archivo seleccionado
+        function showFileDetails() {
+            const fileInput = document.getElementById('file-upload');
+            const fileDetails = document.getElementById('file-details');
+            const fileNameSpan = document.querySelector('#file-name span');
+            const fileSizeSpan = document.querySelector('#file-size span');
+
+            if (fileInput.files.length > 0) {
+                const selectedFile = fileInput.files[0];
+                fileNameSpan.textContent = selectedFile.name;
+                fileSizeSpan.textContent = selectedFile.size;
+                fileDetails.style.display = 'block';
+            } else {
+                fileDetails.style.display = 'none';
+            }
+        }
+
+        // JavaScript para cargar la lista de archivos desde el servidor
+        fetch('/list')
+            .then(response => response.json())
+            .then(data => {
+                const table = document.querySelector('table');
+                data.forEach(file => {
+                    const row = table.insertRow();
+                    const cell1 = row.insertCell(0);
+                    const cell2 = row.insertCell(1);
+                    cell1.innerHTML = file.descripcion;
+                    cell2.innerHTML = `<a href="/download?file=${file.url}">Download</a>`;
+                });
+            });
+    </script>
+</body>
+</html>
