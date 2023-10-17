@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>File Upload and Download</title>
     <style>
@@ -32,7 +31,6 @@
         .custom-file-input input[type="file"] {
             display: none;
         }
-
         input[type="submit"] {
             background-color: #3498db;
             color: #fff;
@@ -41,7 +39,6 @@
             border-radius: 5px;
             cursor: pointer;
         }
-
         h2 {
             margin-top: 20px;
             color: #333;
@@ -53,8 +50,7 @@
             border-collapse: collapse;
         }
 
-        th,
-        td {
+        th, td {
             border: 1px solid #ccc;
             padding: 10px;
         }
@@ -75,13 +71,12 @@
         }
     </style>
 </head>
-
 <body>
     <h1>File Upload and Download</h1>
     <form>
         <label for="file-upload" class="custom-file-input">
             <span>Choose a File</span>
-            <input type="file" id="file-upload" name="file">
+            <input type="file" id="file-upload" name="file"  onchange="showFileDetails()">
         </label>
         <div id="file-details">
             <p id="file-name">File Name: <span></span></p>
@@ -99,31 +94,7 @@
     </table>
 
     <script>
-        // JavaScript para cargar archivos sin redireccionamiento
-        document.getElementById('submit-button').addEventListener('click', function () {
-            const fileInput = document.getElementById('file-upload');
-            const selectedFile = fileInput.files[0];
-
-            if (selectedFile) {
-                const formData = new FormData();
-                formData.append('file', selectedFile);
-
-                fetch('http://balanceadorcargaextremelab-1823199642.us-east-1.elb.amazonaws.com/upload', {
-                    method: 'POST',
-                    body: formData, // Enviar como FormData
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        // Manejar la respuesta si es necesario
-                        console.log(data);
-                    })
-                    .catch(error => {
-                        // Manejar errores si es necesario
-                        console.error(error);
-                    });
-            }
-        });
-
+        
         // Función para mostrar los detalles del archivo seleccionado
         function showFileDetails() {
             const fileInput = document.getElementById('file-upload');
@@ -156,5 +127,4 @@
             });
     </script>
 </body>
-
 </html>
