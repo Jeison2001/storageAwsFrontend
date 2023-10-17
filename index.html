@@ -73,7 +73,7 @@
 </head>
 <body>
     <h1>File Upload and Download</h1>
-    <form action="/upload" method="post" enctype="multipart/form-data">
+    <form action="http://balanceadorcargaextremelab-1823199642.us-east-1.elb.amazonaws.com/upload" method="post" enctype="multipart/form-data">
         <label for="file-upload" class="custom-file-input">
             <span>Choose a File</span>
             <input type="file" id="file-upload" name="file" onchange="showFileDetails()">
@@ -112,7 +112,7 @@
         }
 
         // JavaScript para cargar la lista de archivos desde el servidor
-        fetch('/list')
+        fetch('http://balanceadorcargaextremelab-1823199642.us-east-1.elb.amazonaws.com/list')
             .then(response => response.json())
             .then(data => {
                 const table = document.querySelector('table');
@@ -121,7 +121,7 @@
                     const cell1 = row.insertCell(0);
                     const cell2 = row.insertCell(1);
                     cell1.innerHTML = file.descripcion;
-                    cell2.innerHTML = `<a href="/download?file=${file.url}">Download</a>`;
+                    cell2.innerHTML = `<a href="http://balanceadorcargaextremelab-1823199642.us-east-1.elb.amazonaws.com/download?file=${file.url}">Download</a>`;
                 });
             });
     </script>
