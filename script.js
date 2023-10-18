@@ -30,6 +30,8 @@ $(document).ready(function() {
                 contentType: false,
                 success: function (data) {
                     // Aquí puedes manejar la respuesta si es necesario
+                    var fileDetails = $('#file-details');
+                    fileDetails.css('display', 'none');
                 }
             });
         } else {
@@ -38,23 +40,24 @@ $(document).ready(function() {
     });
 
     // Evento para actualizar la tabla de archivos
-    $('#update-button').on('click', function () {
-        $.ajax({
-            url: 'http://balanceadorcargaextremelab-1823199642.us-east-1.elb.amazonaws.com/list',
-            type: 'GET',
-            success: function (data) {
-                // Limpiar la tabla antes de actualizar
-                $('table tr:gt(0)').remove();
+   $('#update-button').on('click', function () {
+    $.ajax({
+        url: 'http://balanceadorcargaextremelab-1823199642.us-east-1.elb.amazonaws.com/list',
+        type: 'GET',
+        success: function (data) {
+            // Limpiar la tabla antes de actualizar
+            $('table tr:gt(0)').remove();
 
-                // Agregar los datos a la tabla
-                data.forEach(function (item) {
-                    var row = '<tr>' +
-                        '<td>' + item.fileName + '</td>' +
-                        '<td><a href="' + item.fileUrl + '" download>Descargar</a></td>' +
-                        '</tr>';
-                    $('table').append(row);
-                });
-            }
-        });
+            // Iterar a través de la lista de archivos en 'files'
+            data.files.forEach(function (item) {
+                var row = '<tr>' +
+                    '<td>' + item[1] + '</td>' +  // El segundo elemento es la descripción/nombre
+                    '<td><a href="' + item[2] + '" download>Descargar</a></td>' +  // El tercer elemento es la URL
+                    '</tr>';
+                $('table').append(row);
+            });
+        }
     });
+});
+
 });
